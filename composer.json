@@ -1,6 +1,6 @@
 {
-    "name": "bastinald/laravel-bootstrap-components",
-    "homepage": "https://github.com/bastinald/laravel-bootstrap-components",
+    "name": "thiktak/laravel-bootstrap-component-select2",
+    "homepage": "https://github.com/thiktak/laravel-bootstrap-component-select2",
     "description": "Laravel Bootstrap Blade components for Select2 & Bootstrap 5.",
     "license": "MIT",
     "authors": [
