@@ -10,6 +10,8 @@ class LaravelBootstrapComponentSelect2Provider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'bs');
 
+        $this->loadRoutesFrom(__DIR__ . '/../../routes/api.php');
+
         //$this->publishes(
             //[__DIR__ . '/../../config/laravel-bootstrap-components.php' => config_path('laravel-bootstrap-components.php')],
             //['laravel-bootstrap-components', 'laravel-bootstrap-components:config']
