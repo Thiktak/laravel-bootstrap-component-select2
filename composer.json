@@ -1,0 +1,30 @@
+{
+    "name": "bastinald/laravel-bootstrap-components",
+    "homepage": "https://github.com/bastinald/laravel-bootstrap-components",
+    "description": "Laravel Bootstrap Blade components for Select2 & Bootstrap 5.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Georges OLIVARÈS",
+            "email": "olivares.georges@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "laravel/framework": "^8.0",
+        "bastinald/laravel-bootstrap-components": "^2.0.15",
+        "apalfrey/select2-bootstrap-5-theme": "^1.1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Thiktak\\LaravelBootstrapComponentSelect2\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Thiktak\\LaravelBootstrapComponentSelect2\\Providers\\LaravelBootstrapComponentSelect2Provider"
+            ]
+        }
+    }
+}
