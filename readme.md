@@ -47,18 +47,52 @@ Here, the important part is the `what="Model"`, with Model = App\Models\User or 
 
 
 ### Configure your models
+
+ 1. Implement the trait `Select2Searchable`
+ 2. Fill the protected variable $search2Fields with list of columns to be added in the where closure
+ 3. Implement the `__toString()` model method if you want to have a beautiful output
+
  
 ```php
+
+use Thiktak\LaravelBootstrapComponentSelect2\Models\Search2Proxies\Select2Searchable;
+
 class User extends Model
 {
+    use Select2Searchable;
+
+    // Will use magic search
+    protected $search2Fields = ['name', 'title'];
+
     // [...]
+
+}
+```
+
+You can redefine the methods `search2` and `search2_export` if required.
+
+
+You can also create a proxy and build you own query. The Select2Proxy implement automatically the `Select2Searchable` trait.
+The proxy should be on `App\Models\Search2Proxies` folder.
+
+```php
+namespace App\Models\Search2Proxies;
+
+use Thiktak\LaravelBootstrapComponentSelect2\Models\Search2Proxies\Select2Proxy;
+
+class UserProxy extends Select2Proxy
+{
+    /*
+     * protected $search2Fields = ['name', 'title'];
+     */
 
     /**
      * Method Select2
      * Will return a query object based on the keyword searched
      */
     public function select2($q) {
-        return self::query()
+        return $this->getModel()
+            ->query()
             ->where('name', 'like', '%' . $q . '%')
             ->orderBy('name');
     }
@@ -98,4 +132,4 @@ Use the error code to know what happens.
 
 ## TODO
  
- - [ ] Use Proxy for Model (App\Models\Search2Proxies\<ModelName>Proxy)
+ - [X] Use Proxy for Model (App\Models\Search2Proxies\<ModelName>Proxy)

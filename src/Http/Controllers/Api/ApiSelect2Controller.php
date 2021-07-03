@@ -12,6 +12,9 @@ Class ApiSelect2Controller extends Controller
     protected $class;
 	protected $data = [
 		'results'  => [],
+        'meta'  => [
+            'used' => null,
+        ],
         'error' => [
             'code'    => 200,
             'message' => null,
@@ -39,37 +42,6 @@ Class ApiSelect2Controller extends Controller
                 )
             ];
         }
-/*
-        if( class_exists($_class) ) {
-            if( method_exists($_class, 'select2') ) {
-                $oClass = app($_class);
-                $results = $oClass->select2($q);
-
-
-                if( method_exists($_class, 'export_select2') ) {
-                    $this->data['results'] = $results->get()->map(function($entity) use($oClass) {
-                        return $oClass->export_select2($entity);
-                    });
-                }
-                else {
-                    $this->data['error'] = [
-                        'code' => 404, 'message' => 'No `export_select2` method exists for the model'
-                    ];
-                }
-
-            }
-            else {
-                $this->data['error'] = [
-                    'code' => 404, 'message' => 'No `select2` method exists for the model'
-                ];
-            }
-        }
-        else {
-            $this->data['error'] = [
-                'code' => 404, 'message' => 'Model does not exists'
-            ];
-        }*/
-
 
         return $this->data;
     }
@@ -112,5 +84,8 @@ Class ApiSelect2Controller extends Controller
         $this->data['results'] = $results->get()->map(function($entity) {
             return $this->class->select2_export($entity);
         });
+
+        $this->data['meta']['used'] = get_class($this->class);
+        $this->data['meta']['like'] = $this->class->return_select2_searchFields();
     }
 }
