@@ -87,14 +87,35 @@ class UserProxy extends Select2Proxy
      */
 
     /**
-     * Method Select2
-     * Will return a query object based on the keyword searched
+     * METHOD getModel
+     *----------------
+     * Define your own model
+     * Used by magic method select2, if not overwritten
      */
-    public function select2($q) {
+    public function getModel() {
+        return new \App\Models\User;
+    }
+
+    /**
+     * Method Select2
+     *----------------
+     * Will return a query object based on the keyword searched
+     * ... or the ID provided
+     */
+    public function select2($id, $term) {
         return $this->getModel()
             ->query()
-            ->where('name', 'like', '%' . $q . '%')
-            ->orderBy('name');
+            // Search by ID
+            ->when($id, function($q) use($id) {
+                // no return
+                $q->find($id);
+                // OR $q->where($this->getModel()->getPrimaryKey(), $id)
+            })
+            ->when(!$id, function($q) use($term) {
+                return $q
+                    ->where('name', 'like', '%' . $term . '%')
+                    ->orderBy('name');
+            });
     }
 
 
@@ -133,3 +154,9 @@ Use the error code to know what happens.
 ## TODO
  
  - [X] Use Proxy for Model (App\Models\Search2Proxies\<ModelName>Proxy)
+
+## Changelogs
+
+ - Added select2/autoload values (fetch data via API in order to keep label synchronization)
+ - Added possibility to fetch by ID or by term
+ - Added Proxy model
