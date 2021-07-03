@@ -47,15 +47,16 @@ Here, the important part is the `what="Model"`, with Model = App\Models\User or 
 
 
 ### Configure your models
-```
+ 
+```php
 class User extends Model
 {
-	// [...]
+    // [...]
 
-	/**
-	 * Method Select2
-	 * Will return a query object based on the keyword searched
-	 */
+    /**
+     * Method Select2
+     * Will return a query object based on the keyword searched
+     */
     public function select2($q) {
         return self::query()
             ->where('name', 'like', '%' . $q . '%')
@@ -63,10 +64,10 @@ class User extends Model
     }
 
 
-	/**
-	 * Method Export_select2
-	 * Will export array data based on Select2 format id/text
-	 */
+    /**
+     * Method Export_select2
+     * Will export array data based on Select2 format id/text
+     */
     public function export_select2(User $user) {
         // id   => '1'
         // text => 'Admin (user@example.net)'
@@ -76,7 +77,7 @@ class User extends Model
         ];
     }
 
-	// [...]
+    // [...]
 
 }
 ```
@@ -96,5 +97,5 @@ Output:
 Use the error code to know what happens.
 
 ## TODO
-
-[ ] Use Proxy for Model (App\Models\Search2Proxies\<ModelName>Proxy)
+ 
+ - [ ] Use Proxy for Model (App\Models\Search2Proxies\<ModelName>Proxy)
