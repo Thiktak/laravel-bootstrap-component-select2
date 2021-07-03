@@ -10,6 +10,8 @@ use Thiktak\LaravelBootstrapComponentSelect2\Models\Search2Proxies\Select2Search
 Class ApiSelect2Controller extends Controller
 {	
     protected $class;
+    protected $q;
+    protected $id;
 	protected $data = [
 		'results'  => [],
         'meta'  => [
@@ -25,13 +27,14 @@ Class ApiSelect2Controller extends Controller
         $this->class = null;
 
         $get_what = request()->get('what');
-        $get_q    = request()->get('q');
+        $this->q  = request()->get('q');
+        $this->id = request()->get('id');
 
         // Sanatize
         $get_what = str_replace('App\\Models\\', '', $get_what);
 
-        $this->searchForModel($c1 = 'App\Models\\Search2Proxies\\' . $get_what . 'Proxy', $get_q);
-        $this->searchForModel($c2 = 'App\Models\\' . $get_what, $get_q);
+        $this->searchForModel($c1 = 'App\Models\\Search2Proxies\\' . $get_what . 'Proxy');
+        $this->searchForModel($c2 = 'App\Models\\' . $get_what);
 
         if( empty($this->class) ) {
             $this->data['error'] = [
@@ -50,7 +53,7 @@ Class ApiSelect2Controller extends Controller
 
     }
 
-    public function searchForModel($class, $q) {
+    public function searchForModel($class) {
 
         // Execute only if nothing found
         if( !empty($this->class) ) {
@@ -80,7 +83,8 @@ Class ApiSelect2Controller extends Controller
 
 
         $this->class = app($class);
-        $results = $this->class->select2($q);
+        $results = $this->class->select2($this->id, $this->q);
+
         $this->data['results'] = $results->get()->map(function($entity) {
             return $this->class->select2_export($entity);
         });

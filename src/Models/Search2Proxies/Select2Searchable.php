@@ -7,24 +7,32 @@ Trait Select2Searchable {
 
 	protected $defaultSearch2Fields = ['name', 'title'];
 
-	public function select2($q)
+	public function select2($id, $term)
 	{
 		$model = $this->getModel();
 		$query = $model->query();
-		
-		foreach( array_filter(explode(' ', $q)) as $q_word ) {
-			$query = $query->where(function($query) use($q_word, $model) {
-				foreach( $this->return_select2_searchFields() as $field ) {
-					// If field exists in ATTRIBUTES list
-					if( Schema::hasColumn($model->getTable(), $field) ) {
-						$query = $query
-							->orWhere($field, 'like', '%' . $q_word . '%');
-					}
+
+		return $query
+			
+			// Search by ID
+			->when($id, function($query) use($model, $id) {
+				$query->find($id);
+			})
+
+			// Search by Wheres
+			->when(!$id, function($query) use($model, $term) {
+				foreach( array_filter(explode(' ', $term)) as $q_word ) {
+					$query = $query->where(function($query) use($q_word, $model) {
+						foreach( $this->return_select2_searchFields() as $field ) {
+							// If field exists in ATTRIBUTES list
+							if( Schema::hasColumn($model->getTable(), $field) ) {
+								$query = $query
+									->orWhere($field, 'like', '%' . $q_word . '%');
+							}
+						}
+					});
 				}
 			});
-		}
-
-		return $query;
 	}
 
 
