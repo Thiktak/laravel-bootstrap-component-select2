@@ -27,6 +27,12 @@ require('../../vendor/thiktak/laravel-bootstrap-component-select2/resources/js/s
 
 ```
 
+### Run NPM
+
+```
+npm run dev
+```
+
 ### Use the component on your blades
 
 
